@@ -37,6 +37,65 @@ function extractJson(text: string): string {
   return trimmed;
 }
 
+function isInvoiceOrBill(text: string): boolean {
+  // Normalize text to lowercase for case-insensitive matching
+  const normalizedText = text.toLowerCase();
+  
+  // Keywords that strongly indicate an invoice or bill
+  const invoiceKeywords = [
+    'invoice',
+    'bill',
+    'billing',
+    'statement',
+    'receipt',
+    'payment due',
+    'amount due',
+    'total amount',
+    'subtotal',
+    'tax',
+    'vendor',
+    'supplier',
+    'invoice number',
+    'invoice date',
+    'due date',
+    'item',
+    'quantity',
+    'unit price',
+    'line item',
+    'charge',
+    'fee',
+    'service',
+    'product',
+    'description',
+    'account number',
+    'invoice #',
+    'bill to',
+    'ship to',
+  ];
+  
+  // Count how many invoice keywords are found
+  let keywordCount = 0;
+  for (const keyword of invoiceKeywords) {
+    if (normalizedText.includes(keyword)) {
+      keywordCount++;
+    }
+  }
+  
+  // Also check for common patterns like currency symbols with numbers
+  const hasCurrencyPattern = /[$€£¥₹]\s*\d+|\d+\s*[$€£¥₹]/.test(text);
+  const hasAmountPattern = /(total|amount|sum|subtotal).*?\d+/.test(normalizedText);
+  
+  // Consider it an invoice if:
+  // - At least 3 invoice keywords are found, OR
+  // - At least 2 keywords + currency pattern, OR
+  // - At least 2 keywords + amount pattern
+  return (
+    keywordCount >= 3 ||
+    (keywordCount >= 2 && hasCurrencyPattern) ||
+    (keywordCount >= 2 && hasAmountPattern)
+  );
+}
+
 function generateMockAnalysis(): AnalysisResult {
   // Generate realistic mock data for MVP demo
   const vendors = [
@@ -214,6 +273,16 @@ export async function POST(request: NextRequest) {
     console.error("PDF parse error:", e);
     return NextResponse.json(
       { error: "Failed to parse PDF" },
+      { status: 400 }
+    );
+  }
+
+  // Validate that the document is an invoice or bill
+  if (!isInvoiceOrBill(rawText)) {
+    return NextResponse.json(
+      { 
+        error: "This document doesn't appear to be an invoice or bill. Please upload a valid invoice document." 
+      },
       { status: 400 }
     );
   }

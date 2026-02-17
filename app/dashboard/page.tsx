@@ -87,8 +87,35 @@ export default function DashboardPage() {
         {loading && <Loader />}
 
         {error && (
-          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-            {error}
+          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4">
+            <div className="flex items-start">
+              <svg
+                className="mr-3 h-5 w-5 flex-shrink-0 text-red-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                />
+              </svg>
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-red-800">
+                  {error.includes("doesn't appear to be an invoice") 
+                    ? "Invalid Document Type" 
+                    : "Error"}
+                </h3>
+                <p className="mt-1 text-sm text-red-700">{error}</p>
+                {error.includes("doesn't appear to be an invoice") && (
+                  <p className="mt-2 text-xs text-red-600">
+                    Please ensure your document contains invoice-related information such as vendor name, line items, amounts, or billing details.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
