@@ -49,8 +49,8 @@ export default function FileUpload({
         onDragOver={handleDragOver}
         className={`rounded-xl border-2 border-dashed p-8 text-center transition ${
           disabled
-            ? "cursor-not-allowed border-slate-200 bg-slate-50"
-            : "cursor-pointer border-slate-300 bg-slate-50/50 hover:border-emerald-400 hover:bg-emerald-50/50"
+            ? "cursor-not-allowed border-slate-200 bg-slate-50 dark:border-slate-600 dark:bg-slate-800"
+            : "cursor-pointer border-slate-300 bg-slate-50/50 hover:border-emerald-400 hover:bg-emerald-50/50 dark:border-slate-600 dark:bg-slate-800/50 dark:hover:border-emerald-500 dark:hover:bg-emerald-900/20"
         }`}
       >
         <input
@@ -67,8 +67,8 @@ export default function FileUpload({
         >
           {file ? (
             <div>
-              <p className="font-medium text-slate-800">{file.name}</p>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="font-medium text-slate-800 dark:text-slate-200">{file.name}</p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 {(file.size / 1024).toFixed(1)} KB
               </p>
               <button
@@ -77,20 +77,20 @@ export default function FileUpload({
                   e.preventDefault();
                   clearFile();
                 }}
-                className="mt-3 text-sm font-medium text-emerald-600 hover:text-emerald-700"
+                className="mt-3 text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
               >
                 Remove file
               </button>
             </div>
           ) : (
             <>
-              <p className="text-slate-600">
+              <p className="text-slate-600 dark:text-slate-300">
                 Drag and drop a PDF here, or{" "}
-                <span className="font-medium text-emerald-600">
+                <span className="font-medium text-emerald-600 dark:text-emerald-400">
                   choose a file
                 </span>
               </p>
-              <p className="mt-1 text-sm text-slate-500">PDF only</p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">PDF only</p>
             </>
           )}
         </label>

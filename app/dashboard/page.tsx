@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 import FileUpload from "@/components/FileUpload";
 import Loader from "@/components/Loader";
 import ResultsDisplay from "@/components/ResultsDisplay";
@@ -39,29 +40,32 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white shadow-sm">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      <header className="border-b border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
         <div className="mx-auto max-w-4xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <Link
               href="/"
-              className="text-xl font-semibold text-slate-800 hover:text-slate-900"
+              className="text-xl font-semibold text-slate-800 hover:text-slate-900 dark:text-slate-100 dark:hover:text-white"
             >
-              BillIntel<span className="text-emerald-600">.AI</span>
+              BillIntel<span className="text-emerald-600 dark:text-emerald-400">.AI</span>
             </Link>
-            <Link
-              href="/"
-              className="text-sm font-medium text-slate-600 hover:text-slate-900"
-            >
-              ← Home
-            </Link>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Link
+                href="/"
+                className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+              >
+                ← Home
+              </Link>
+            </div>
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-slate-900">Invoice Analysis</h1>
-        <p className="mt-1 text-slate-600">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Invoice Analysis</h1>
+        <p className="mt-1 text-slate-600 dark:text-slate-400">
           Upload a PDF invoice and click Analyze to get AI-powered insights.
         </p>
 
@@ -77,7 +81,7 @@ export default function DashboardPage() {
               type="button"
               onClick={handleAnalyze}
               disabled={!file || loading}
-              className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition disabled:cursor-not-allowed disabled:opacity-50 hover:bg-emerald-700"
+              className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition disabled:cursor-not-allowed disabled:opacity-50 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600"
             >
               Analyze
             </button>
@@ -87,10 +91,10 @@ export default function DashboardPage() {
         {loading && <Loader />}
 
         {error && (
-          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4">
+          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950/50">
             <div className="flex items-start">
               <svg
-                className="mr-3 h-5 w-5 flex-shrink-0 text-red-600"
+                className="mr-3 h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
@@ -103,14 +107,14 @@ export default function DashboardPage() {
                 />
               </svg>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-red-800">
+                <h3 className="text-sm font-semibold text-red-800 dark:text-red-200">
                   {error.includes("doesn't appear to be an invoice") 
                     ? "Invalid Document Type" 
                     : "Error"}
                 </h3>
-                <p className="mt-1 text-sm text-red-700">{error}</p>
+                <p className="mt-1 text-sm text-red-700 dark:text-red-300">{error}</p>
                 {error.includes("doesn't appear to be an invoice") && (
-                  <p className="mt-2 text-xs text-red-600">
+                  <p className="mt-2 text-xs text-red-600 dark:text-red-400">
                     Please ensure your document contains invoice-related information such as vendor name, line items, amounts, or billing details.
                   </p>
                 )}
